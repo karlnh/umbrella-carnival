@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-grey-lighter">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+    <!-- hero -->
+    <header class="hero is-info">
+        <div class="hero-body">
+            <h1 class="title is-1 has-text-white">
+                <span class="has-text-warning">Weather</span> Dashboard
+            </h1>
+            <h2 class="subtitle is-4 has-text-grey-lighter">
+                Find the 5-day forecast for any city.
+            </h2>
+        </div>
+    </header>
+    <!-- main content container -->
+    <main id="main-content" class="columns is-desktop">
+        <!-- city selection and storage sidebar -->
+        <aside id="sidebar" class="column is-one-fifth-desktop">
+            <!-- city search container -->
+            <section class="box">
+                <h3 class="title is-2 has-text-info-dark">
+                    Enter a city...
+                </h3>
+                <div class="field has-addons"> <!-- has-addons used to attach search box and button -->
+                    <div class="control is-expanded">
+                        <input class="input" type="text" placeholder="Minneapolis, Minnesota">
+                    </div>
+                    <div class="control">
+                        <button class="button is-info">Search</button>
+                    </div>
+                </div>
+            </section>
+            <!-- Previous search display -->
+            <section class="box content">
+                <h3 class="title has-text-info-dark">
+                    Previous searches
+                </h3>
+                <ul>
+                    <li>Minneapolis</li>
+                    <li>Madison</li>
+                    <li>Chicago</li>
+                    <li>Indianapolis</li>
+                </ul>
+            </section>
+        </aside>
+        <!-- selected city container -->
+        <section id="weather-container" class="column">
+            <!-- current weather container -->
+            <section class="box">
+                <h3 class="title has-text-info-dark">
+                    Current Weather ([date])
+                </h3>
+                <h4 class="title is-4 has-text-warning-dark"><strong>
+                    [City] ☀
+                </strong></h4>
+                <div class="columns">
+                    <div id="weather-now" class="column is-narrow">
+                        <p class="subtitle">Temperature:</p>
+                        <p class="subtitle">Humidity:</p>
+                        <p class="subtitle">Wind Speed:</p>
+                    </div>
+                    <div id="weather-current-variables" class="column">
+                        <p class="subtitle">(temp)</p>
+                        <p class="subtitle">(humidity)</p>
+                        <p class="subtitle">(wind speed)</p>
+                    </div>
+                </div>
+            </section>
+            <!-- 5 day forecast level container -->
+            <section class="box">
+                <h3 class="title is-4 has-text-info-dark">
+                    5-Day Forecast
+                </h3>
+                <div id="weather-forecast" class="level">
+                    <!-- TODO: generate these level-items in javascript. -->
+                    <div class="level-item">
+                        <div>
+                            <p class="heading"><strong>(Date)</strong></p>
+                            <p class="heading">Temp:</p>
+                            <p class="heading">Humidity:</p>
+                            <p class="heading">Wind:</p>
+                        </div>
+                    </div>
+                    <div class="level-item">
+                        <p>test</p>
+                    </div>
+                    <div class="level-item">
+                        <p>test</p>
+                    </div>
+                    <div class="level-item">
+                        <p>test</p>
+                    </div>
+                    <div class="level-item">
+                        <p>test</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+</body>
+<script src="./assets/script.js"></script>
+</html>
