@@ -1,6 +1,21 @@
 const APIKey = "";
 // https://home.openweathermap.org/api_keys
 
+const searchBtn = $('button');
+const searchTextEl = $('.input');
+
+let citySearch = "";
+
+function main() {
+    // on search click;
+    searchBtn.on('click', function (event) {
+        console.log("button clicked");
+        citySearch = searchTextEl[0].value;
+        console.log("city:",citySearch);
+        // save searchText to local storage
+    })
+}
+
 // TODO: Write a function which grabs a selected city and its weather information through OWM's API.
     // Write a subfunction which concats the newest search to localStorage along with a clickable link to the city weather data. Only five most recent searched cities should be displayed. This may involve simply cutting out the first element of the localStorage array.
 
@@ -17,3 +32,4 @@ const APIKey = "";
     // Grab 5-Day Forecast information starting from the current day.
     // Display temp, humidity, and wind speed information for each day.
 
+main();
