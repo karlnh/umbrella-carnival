@@ -51,6 +51,10 @@ function main() {
                         // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.country}</li>`
                     }
                 }
+            }).then(function (data) {
+                cityList.on('click','li', function() {
+                    console.log("Clicking this works!");
+                })
             })
 
         }; // otherwise don't do anything.
