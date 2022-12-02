@@ -31,10 +31,15 @@
                 </h3>
                 <div id="search-els" class="field has-addons"> <!-- has-addons used to attach search box and button -->
                     <div class="control is-expanded">
-                        <input class="input" type="text" placeholder="Minneapolis, Minnesota">
+                        <input class="input" type="text" placeholder='City name ("Minneapolis")'>
                     </div>
                     <div class="control">
-                        <button class="button is-info">Search</button>
+                        <button
+                        id="search-button"
+                        class="button is-info js-modal-trigger"
+                        data-target="modal-city-select"> <!-- data-target needed so clicking the button knows what modal to open. -->
+                            Search
+                        </button>
                     </div>
                 </div>
             </section>
@@ -104,6 +109,21 @@
                 </div>
             </section>
         </section>
+        <!-- city select modal -->
+        <summary id="modal-city-select" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <h3 class="modal-card-title">Select a city.</h3>
+                    <button class="delete"></button>
+                </header>
+                <div class="box">
+                    <!-- to be populated with cities -->
+                    <ul id="city-list">
+                    </ul>
+                </div>
+            </div>
+        </summary>
     </main>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
