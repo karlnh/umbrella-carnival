@@ -1,19 +1,15 @@
-const APIKey = "43dd332c7883656c9b184a8861ced36a";
+const APIKey = "";
 // https://home.openweathermap.org/api_keys
-
 
 const searchBtn = $('.search-button');
 const searchTextEl = $('.input');
 const cityModal = $('#modal-city-select');
-
 const searchLimit = 5;
 
 let cityList = $('#city-list');
 let citySearch
 let cityQuery = "http://api.openweathermap.org/geo/1.0/direct?q="+citySearch+"&limit=5&appid="+APIKey;
 let cityCoords = "";
-
-
 
 function main() {
     // On click, show modal populated with possible cities.
@@ -22,34 +18,37 @@ function main() {
     // Modeled after code in Bulma documentation:
     // https://bulma.io/documentation/components/modal/
     $('.js-modal-trigger').on('click', function(event) {
-        cityList.empty();
-        if (searchTextEl[0].value) { // if text is present
+        cityList.empty(); // clear modal list on new search
+        let search = searchTextEl[0].value;
+        if (search) { // if text is present
             cityModal.addClass('is-active');
             $('.delete').on('click', function(event) { // close button functionality
                 cityModal.removeClass('is-active');
             });
-            let search = searchTextEl[0].value;
-            
-            fetch("https://api.openweathermap.org/geo/1.0/direct?q="+search+"&limit="+searchLimit+"&appid="+APIKey)
-            .then(function (response) {
+            fetch("https://api.openweathermap.org/geo/1.0/direct?q="+search+"&limit="+searchLimit+"&appid="+APIKey
+            ).then(function (response) {
                 return response.json();
-            })
-            .then(function (data) {
+            }).then(function (data) {
                 // iterating through the data to get cities
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].state !== undefined) { // if its a US state
-                        console.log(data[i].name, data[i].state);
+                    let city = data[i];
+                    if (city.state !== undefined) { // if its a US state
+                        console.log(city.name, city.state);
                         cityList.append("<li " +
                         "lat=" + data[i].lat + " lon=" + data[i].lon + ">" +
-                        data[i].name+", " + data[i].state+", " + data[i].country +
+                        city.name + ", " + city.state + ", " + city.country +
                         "</li>");
+                        // VSCode is suggesting to turn the previous into the following:
+                        // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.state}, ${city.country}</li>`
                     } else { // if not a US state
-                        console.log(data[i].name, data[i].country);
+                        console.log(city.name, city.country);
                         cityList.append("<li " +
                         "lat=" + data[i].lat + " lon=" + data[i].lon + ">" +
-                        data[i].name + ", " + data[i].country +
+                        city.name + ", " + city.country +
                         "</li>"
                         );
+                        // VSCode is suggesting to turn the previous into the following:
+                        // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.country}</li>`
                     }
                 }
             })
@@ -57,19 +56,7 @@ function main() {
         }; // otherwise don't do anything.
     });
 
-                // console.log(data[0].name+", "+data[0].state);
-                // console.log(data[0].lat);
-                // console.log(data[0].lon);
-        // save searchText to local storage
-        // convert city into lat long in cityCoords
-        // fetch(cityQuery)
-        //     .then(function (response) {
-        //         return response.json();
-        //     })
-        //     .then(function (data) {
-        //         console.log(data[0]);
-
-        //     });
+    // save searchText to local storage
 
 
 }
