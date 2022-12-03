@@ -61,10 +61,13 @@
             <!-- current weather container -->
             <section class="box">
                 <h3 class="title has-text-info-dark">
-                    Current Weather ([date])
+                    Current Weather (<span id="date">[date]</span>)
                 </h3>
                 <h4 class="title is-4 has-text-warning-dark"><strong>
-                    [City] ☀
+                    <span id="selected-city">
+                    </span>
+                    <span id="selected-city-weather-icon">
+                    </span>
                 </strong></h4>
                 <div class="columns">
                     <div id="weather-now" class="column is-narrow">
@@ -72,10 +75,10 @@
                         <p class="subtitle">Humidity:</p>
                         <p class="subtitle">Wind Speed:</p>
                     </div>
-                    <div id="weather-current-variables" class="column">
-                        <p class="subtitle">(temp)</p>
-                        <p class="subtitle">(humidity)</p>
-                        <p class="subtitle">(wind speed)</p>
+                    <div id="weather-now-vars" class="column">
+                        <p class="subtitle"></p>
+                        <p class="subtitle"></p>
+                        <p class="subtitle"></p>
                     </div>
                 </div>
             </section>
@@ -127,6 +130,7 @@
     </main>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="./assets/script.js"></script>
 
 </html>
