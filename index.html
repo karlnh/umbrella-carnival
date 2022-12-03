@@ -65,20 +65,21 @@
                 </h3>
                 <h4 class="title is-4 has-text-warning-dark"><strong>
                     <span id="selected-city">
+                        Select a city.
                     </span>
                     <span id="selected-city-weather-icon">
                     </span>
                 </strong></h4>
-                <div class="columns">
+                <div class="columns is-mobile"> <!-- is-mobile keeps columns from rearranging on slim screens -->
                     <div id="weather-now" class="column is-narrow">
-                        <p class="subtitle">Temperature:</p>
-                        <p class="subtitle">Humidity:</p>
-                        <p class="subtitle">Wind Speed:</p>
+                        <p class="subtitle"><strong>Temperature:</strong></p>
+                        <p class="subtitle"><strong>Humidity:</strong></p>
+                        <p class="subtitle"><strong>Wind Speed:</strong></p>
                     </div>
                     <div id="weather-now-vars" class="column">
-                        <p class="subtitle"></p>
-                        <p class="subtitle"></p>
-                        <p class="subtitle"></p>
+                        <p class="subtitle">--</p>
+                        <p class="subtitle">--</p>
+                        <p class="subtitle">--</p>
                     </div>
                 </div>
             </section>
