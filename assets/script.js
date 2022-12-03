@@ -1,9 +1,11 @@
-const APIKey = "";
+const APIKey = "43dd332c7883656c9b184a8861ced36a";
 // https://home.openweathermap.org/api_keys
 
-const searchBtn = $('.search-button');
+const searchBtn = $('#search-button');
 const searchTextEl = $('.input');
 const cityModal = $('#modal-city-select');
+const cityModalList = $('city-list');
+
 const searchLimit = 5;
 
 let cityList = $('#city-list');
@@ -13,11 +15,7 @@ let cityCoords = "";
 
 function main() {
     // On click, show modal populated with possible cities.
-    // Requires a separate listener because I guess it accesses it through the class instead of the actual element being clicked.
-    // For real, try replacing $('.js-modal-trigger') with searchBtn. It doesn't work.
-    // Modeled after code in Bulma documentation:
-    // https://bulma.io/documentation/components/modal/
-    $('.js-modal-trigger').on('click', function(event) {
+    searchBtn.click(function(event) {
         cityList.empty(); // clear modal list on new search
         let search = searchTextEl[0].value;
         if (search) { // if text is present
@@ -35,7 +33,7 @@ function main() {
                     if (city.state !== undefined) { // if its a US state
                         console.log(city.name, city.state);
                         cityList.append("<li " +
-                        "lat=" + data[i].lat + " lon=" + data[i].lon + ">" +
+                        "data-lat=" + data[i].lat + " data-lon=" + data[i].lon + ">" +
                         city.name + ", " + city.state + ", " + city.country +
                         "</li>");
                         // VSCode is suggesting to turn the previous into the following:
@@ -43,7 +41,7 @@ function main() {
                     } else { // if not a US state
                         console.log(city.name, city.country);
                         cityList.append("<li " +
-                        "lat=" + data[i].lat + " lon=" + data[i].lon + ">" +
+                        "data-lat=" + data[i].lat + " data-lon=" + data[i].lon + ">" +
                         city.name + ", " + city.country +
                         "</li>"
                         );
@@ -51,12 +49,19 @@ function main() {
                         // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.country}</li>`
                     }
                 }
-            }).then(function (data) {
-                cityList.on('click','li', function() {
-                    console.log("Clicking this works!");
-                })
-            })
+            });
 
+        cityList.on('click', function (event) {
+            let element = event.target;
+            if (element.matches("li")) {
+                console.log(element);
+                cityLat = element.lat;
+                cityLon = element.lon;
+
+            }
+        })
+
+            
         }; // otherwise don't do anything.
     });
 
