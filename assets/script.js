@@ -73,7 +73,7 @@ function main() {
                 let cityName = $(element).data('city-name');
                 let cityLat = $(element).data('lat');
                 let cityLon = $(element).data('lon');
-                fetch("https://api.openweathermap.org/data/2.5/forecast?lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
+                fetch("https://api.openweathermap.org/data/2.5/forecast?units=imperial&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
                     .then(function (response) { return response.json();
                     })
                     .then(function (data) {
@@ -82,9 +82,9 @@ function main() {
                         selectedCity.text(cityName);
                         cityWeatherIcon.text(currentWeather.weather.main); // associate the icon with the weather.
                         // TODO: get these to be the right measurement.
-                        weatherList[0].textContent = currentWeather.main.temp;
-                        weatherList[1].textContent = currentWeather.main.humidity;
-                        weatherList[2].textContent = currentWeather.wind.speed;
+                        weatherList[0].textContent = currentWeather.main.temp + "°F";
+                        weatherList[1].textContent = currentWeather.main.humidity + "%";
+                        weatherList[2].textContent = currentWeather.wind.speed + " miles/hour";
                         
 
                     });
