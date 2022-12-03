@@ -3,31 +3,29 @@ const APIKey = "43dd332c7883656c9b184a8861ced36a";
 
 const searchLimit = 5;
 
-const dateSpan = $('#date');
-const searchBtn = $('#search-button');
-const searchTextEl = $('.input');
+const dateSpanEl = $('#date');
+const searchBtnEl = $('#search-button');
+const searchBoxEl = $('.input');
 const cityModal = $('#modal-city-select');
 const cityList = $('#city-list');
-const weatherNow = $('#weather-now-vars');
+const currentWeatherVariables = $('#weather-now-vars');
 const selectedCity = $('#selected-city');
 const cityWeatherIcon = $('#selected-city-weather-icon');
 
-let citySearch;
-let cityCoords = "";
-let weatherList = weatherNow[0].children;
+let weatherListEl = currentWeatherVariables[0].children;
 
 function main() {
-    dateSpan.text(dayjs().format("ddd, MMM D"));
+    dateSpanEl.text(dayjs().format("ddd, MMM D"));
     setInterval(function () {
-        dateSpan.text(dayjs().format("ddd, MMM D"));
+        dateSpanEl.text(dayjs().format("ddd, MMM D"));
     }, 3600000); // updates every hour
     
     
     // On click, show modal populated with possible cities.
 
-    searchBtn.click(function(event) {
+    searchBtnEl.click(function(event) {
         cityList.empty(); // clear modal list on new search
-        let search = searchTextEl[0].value;
+        let search = searchBoxEl[0].value;
         if (search) { // if text is present
             cityModal.addClass('is-active');
             $('.delete').on('click', function(event) { // close button functionality
@@ -82,9 +80,9 @@ function main() {
                         selectedCity.text(cityName);
                         cityWeatherIcon.text(currentWeather.weather.main); // associate the icon with the weather.
                         // TODO: get these to be the right measurement.
-                        weatherList[0].textContent = currentWeather.main.temp + "°F";
-                        weatherList[1].textContent = currentWeather.main.humidity + "%";
-                        weatherList[2].textContent = currentWeather.wind.speed + " miles/hour";
+                        weatherListEl[0].textContent = currentWeather.main.temp + "°F";
+                        weatherListEl[1].textContent = currentWeather.main.humidity + "%";
+                        weatherListEl[2].textContent = currentWeather.wind.speed + " miles/hour";
                         
 
                     });
