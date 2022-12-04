@@ -1,7 +1,9 @@
 const APIKey = "43dd332c7883656c9b184a8861ced36a";
 // https://home.openweathermap.org/api_keys
 
-const searchLimit = 5;
+const geoAPI = "https://api.openweathermap.org/geo/1.0/direct?q="
+const fiveDayForecastAPI = "https://api.openweathermap.org/data/2.5/forecast?units=imperial"
+const optionalCitiesLimit = 5;
 
 const dateSpanEl = $('#date');
 const searchBtnEl = $('#search-button');
@@ -11,67 +13,89 @@ const cityList = $('#city-list');
 const currentWeatherVariables = $('#weather-now-vars');
 const selectedCity = $('#selected-city');
 const cityWeatherIcon = $('#selected-city-weather-icon');
+const fiveDayForecast = $('#weather-forecast');
 
 let weatherListEl = currentWeatherVariables[0].children;
 
 function main() {
-    dateSpanEl.text(dayjs().format("ddd, MMM D"));
-    setInterval(function () {
+    function getCurrentDate() {
         dateSpanEl.text(dayjs().format("ddd, MMM D"));
-    }, 3600000); // updates every hour
-    
+        setInterval(function () {
+            dateSpanEl.text(dayjs().format("ddd, MMM D"));
+        }, 3600000); // updates every hour
+    }
+
+    function loadWeatherEls() {
+        for (let i = 0; i < 5; i++) { // loops 5 times for 5 days
+            fiveDayForecast.append(
+            '<div class="level-item">'+
+                '<div>'+
+                    '<p class="heading"><strong>(Date)</strong></p>'+
+                    '<p class="heading">Temp:</p>'+
+                    '<p class="heading">Humidity:</p>'+
+                    '<p class="heading">Wind:</p>'+
+                '</div>'+
+            '</div>'
+            );
+        }
+    }
     
     // On click, show modal populated with possible cities.
-
-    searchBtnEl.click(function(event) {
-        cityList.empty(); // clear modal list on new search
-        let search = searchBoxEl[0].value;
-        if (search) { // if text is present
-            cityModal.addClass('is-active');
-            $('.delete').on('click', function(event) { // close button functionality
-                cityModal.removeClass('is-active');
-            });
-            fetch("https://api.openweathermap.org/geo/1.0/direct?q="+search+"&limit="+searchLimit+"&appid="+APIKey
-            )
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    // iterating through the data to get cities
-                    for (let i = 0; i < data.length; i++) {
-                        let city = data[i];
-                        if (city.state !== undefined) { // if its a US state
-                            // console.log(city.name, city.state);
-                            cityList.append("<li " +
-                            "data-city-name=" + city.name +
-                            " data-lat=" + data[i].lat + " data-lon=" + data[i].lon + ">"
-                            + city.name + ", " + city.state + ", " + city.country +
-                            "</li>");
-                            // VSCode is suggesting to turn the previous into the following:
-                            // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.state}, ${city.country}</li>`
-                        } else { // if not a US state
-                            // console.log(city.name, city.country);
-                            cityList.append("<li " +
-                            "data-city-name=" + city.name +
-                            " data-lat=" + data[i].lat + " data-lon=" + data[i].lon + ">"
-                            + city.name + ", " + city.country +
-                            "</li>"
-                            );
-                            // VSCode is suggesting to turn the previous into the following:
-                            // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.country}</li>`
-                        }
-                    }
+    function showCityList() {
+        searchBtnEl.click(function(event) {
+            cityList.empty(); // clear modal list on new search
+            let search = searchBoxEl[0].value;
+            if (search) { // if text is present
+                cityModal.addClass('is-active'); // show modal
+                $('.delete').on('click', function(event) { // close button functionality
+                    cityModal.removeClass('is-active'); // hide modal
                 });
-        // grabs weather information about clicked city.
-        cityList.on('click', function (event) {
+                fetch(geoAPI+search+"&limit="+optionalCitiesLimit+"&appid="+APIKey
+                )
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        // iterating through the data to get cities
+                        for (let i = 0; i < data.length; i++) {
+                            let city = data[i];
+                            if (city.state !== undefined) { // if its a US state
+                                // console.log(city.name, city.state);
+                                cityList.append("<li " +
+                                "data-city-name=" + city.name +
+                                " data-lat=" + data[i].lat + " data-lon=" + data[i].lon + ">"
+                                + city.name + ", " + city.state + ", " + city.country +
+                                "</li>");
+                                // VSCode is suggesting to turn the previous into the following:
+                                // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.state}, ${city.country}</li>`
+                            } else { // if not a US state
+                                // console.log(city.name, city.country);
+                                cityList.append("<li " +
+                                "data-city-name=" + city.name +
+                                " data-lat=" + data[i].lat + " data-lon=" + data[i].lon + ">"
+                                + city.name + ", " + city.country +
+                                "</li>"
+                                );
+                                // VSCode is suggesting to turn the previous into the following:
+                                // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.country}</li>`
+                            }
+                        }
+                    });    
+            }; // otherwise don't do anything.
+        });
+        
+    }
 
+    // grabs weather information about clicked city.
+    function grabWeatherInfo() {
+        cityList.on('click', function (event) {
             let element = event.target;
             if (element.matches("li")) { // if we're actually clicking the list element
                 cityModal.removeClass('is-active'); // hides modal
                 let cityName = $(element).data('city-name');
                 let cityLat = $(element).data('lat');
                 let cityLon = $(element).data('lon');
-                fetch("https://api.openweathermap.org/data/2.5/forecast?units=imperial&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
+                fetch(fiveDayForecastAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
                     .then(function (response) { return response.json();
                     })
                     .then(function (data) {
@@ -88,15 +112,17 @@ function main() {
                     });
             }
         })
-
-            
-        }; // otherwise don't do anything.
-    });
+    }
+    
 
     // save searchText to local storage
 
+    getCurrentDate();
+    loadWeatherEls();
+    showCityList();
+    grabWeatherInfo();
+} // end of main
 
-}
     // Write a subfunction which concats the newest search to localStorage along with a clickable link to the city weather data. Only five most recent searched cities should be displayed. This may involve simply cutting out the first element of the localStorage array.
 
     // TODO: Display past searches in the Previous searches section by grabbing it from localStorage.
@@ -104,5 +130,4 @@ function main() {
     // TODO: Write a function which generates HTML level-items for the 5-Day Forecast.
         // Grab 5-Day Forecast information starting from the current day.
         // Display temp, humidity, and wind speed information for each day.
-
 main();
