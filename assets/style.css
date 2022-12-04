@@ -1,5 +1,5 @@
 #main-content {
-    margin: 1vh;
+    margin: 1vh 15vh;
 }
 
 li {
@@ -10,3 +10,22 @@ li:hover {
     cursor: pointer;
     background-color:#ffe08a!important;
 }
+
+@media (max-width: 1550px) {
+    #main-content {
+        margin: 1vh 5vh;
+    }
+  }
+
+@media (max-width: 1080px) {
+#main-content {
+    margin: 1vh 0.5vh;
+}
+}
+
+@media (max-width: 769px) {
+#main-content {
+    margin: 1vh 0.3vh;
+}
+}
+  
