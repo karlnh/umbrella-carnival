@@ -19,17 +19,23 @@ li:hover {
     #main-content {
         margin: 1vh 5vh;
     }
-  }
+}
 
 @media (max-width: 1080px) {
-#main-content {
-    margin: 1vh 0.5vh;
-}
+    #main-content {
+        margin: 1vh 0.5vh;
+    }
+    .heading {
+        font-size: 15px;
+    }
 }
 
-@media (max-width: 769px) {
-#main-content {
-    margin: 1vh 0.3vh;
-}
+@media (max-width: 767px) {
+    #main-content {
+        margin: 1vh 0.3vh;
+    }
+    .heading {
+        font-size: 24px;
+    }
 }
   
