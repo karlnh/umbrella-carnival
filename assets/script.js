@@ -6,6 +6,7 @@ const currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?&unit
 const forecastAPI = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial"
 const optionalCitiesLimit = 5;
 
+const searchHistoryEl = $('#search-history');
 const dateSpanEl = $('#date');
 const searchBtnEl = $('#search-button');
 const searchBoxEl = $('.input');
@@ -18,9 +19,14 @@ const weatherContainer = $('#weather-container');
 
 // Initialize localStorage if empty:
 let searchesJSON = JSON.parse(localStorage.getItem("searches"));
+console.log(searchesJSON)
 if (searchesJSON === null) {
     searchesJSON = [];
     localStorage.setItem("searches", JSON.stringify(searchesJSON));
+} else if (searchesJSON.length === 0) {
+    searchHistoryEl.empty(); // making sure search history is empty if local storage is empty
+} else {
+    searchHistoryEl.text("<li>Here's an entry!</li>");
 }
 
 
