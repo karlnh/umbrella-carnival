@@ -63,13 +63,13 @@
                 <h3 class="title has-text-info-dark">
                     Current Weather (<span id="date">[date]</span>)
                 </h3>
-                <h4 class="title is-4 has-text-warning-dark"><strong>
+                <h4 id="selected-city-container" class="title is-4 has-text-warning-dark is-flex is-align-items-center">
                     <span id="selected-city">
-                        Select a city.
+                        <strong>Select a city.</strong>
                     </span>
-                    <span id="selected-city-weather-icon">
+                    <span id="selected-city-weather-icon-span">
                     </span>
-                </strong></h4>
+                </h4>
                 <div class="columns is-mobile"> <!-- is-mobile keeps columns from rearranging on slim screens -->
                     <div id="weather-now" class="column is-narrow">
                         <p class="subtitle"><strong>Temperature:</strong></p>
@@ -81,15 +81,6 @@
                         <p class="subtitle">--</p>
                         <p class="subtitle">--</p>
                     </div>
-                </div>
-            </section>
-            <!-- 5 day forecast level container -->
-            <section class="box">
-                <h3 class="title is-4 has-text-info-dark">
-                    5-Day Forecast
-                </h3>
-                <div id="weather-forecast" class="level">
-                    <!-- TODO: generate these level-items in javascript. -->
                 </div>
             </section>
         </section>
