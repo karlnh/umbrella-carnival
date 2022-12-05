@@ -1,8 +1,9 @@
-const APIKey = "43dd332c7883656c9b184a8861ced36a";
+const APIKey = "";
 // https://home.openweathermap.org/api_keys
 
 const geoAPI = "https://api.openweathermap.org/geo/1.0/direct?q="
-const fiveDayForecastAPI = "https://api.openweathermap.org/data/2.5/forecast?units=imperial"
+const currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?&units=imperial"
+const forecastAPI = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial"
 const optionalCitiesLimit = 5;
 
 const dateSpanEl = $('#date');
@@ -12,10 +13,16 @@ const cityModal = $('#modal-city-select');
 const cityList = $('#city-list');
 const currentWeatherVariables = $('#weather-now-vars');
 const selectedCity = $('#selected-city');
-const cityWeatherIcon = $('#selected-city-weather-icon');
-const fiveDayForecast = $('#weather-forecast');
+const weatherIconSpan = $('#selected-city-weather-icon-span');
+const weatherContainer = $('#weather-container');
 
-let weatherListEl = currentWeatherVariables[0].children;
+// Initialize localStorage if empty:
+let searchesJSON = JSON.parse(localStorage.getItem("searches"));
+if (searchesJSON === null) {
+    searchesJSON = [];
+    localStorage.setItem("searches", JSON.stringify(searchesJSON));
+}
+
 
 function main() {
     function getCurrentDate() {
@@ -24,22 +31,6 @@ function main() {
             dateSpanEl.text(dayjs().format("ddd, MMM D"));
         }, 3600000); // updates every hour
     }
-
-    function loadWeatherEls() {
-        for (let i = 0; i < 5; i++) { // loops 5 times for 5 days
-            fiveDayForecast.append(
-            '<div class="level-item">'+
-                '<div>'+
-                    '<p class="heading"><strong>(Date)</strong></p>'+
-                    '<p class="heading">Temp:</p>'+
-                    '<p class="heading">Humidity:</p>'+
-                    '<p class="heading">Wind:</p>'+
-                '</div>'+
-            '</div>'
-            );
-        }
-    }
-    
     // On click, show modal populated with possible cities.
     function showCityList() {
         searchBtnEl.click(function(event) {
@@ -50,8 +41,7 @@ function main() {
                 $('.delete').on('click', function(event) { // close button functionality
                     cityModal.removeClass('is-active'); // hide modal
                 });
-                fetch(geoAPI+search+"&limit="+optionalCitiesLimit+"&appid="+APIKey
-                )
+                fetch(geoAPI+search+"&limit="+optionalCitiesLimit+"&appid="+APIKey)
                     .then(function (response) {
                         return response.json();
                     })
@@ -78,38 +68,83 @@ function main() {
                                 );
                                 // VSCode is suggesting to turn the previous into the following:
                                 // `<li lat=${data[i].lat} lon=${data[i].lon}>${city.name}, ${city.country}</li>`
-                            }
+                            }     
+                        }
+                        // if no city by that search can be found...
+                        if (cityList[0].childElementCount === 0) {
+                            console.log("No city found.");
+                            cityList.append('<p>No cities found.</p>');
                         }
                     });    
             }; // otherwise don't do anything.
         });
         
     }
-
     // grabs weather information about clicked city.
     function grabWeatherInfo() {
-        cityList.on('click', function (event) {
+        cityList.on('click', function (event) { // when clicking on a city,
             let element = event.target;
             if (element.matches("li")) { // if we're actually clicking the list element
                 cityModal.removeClass('is-active'); // hides modal
                 let cityName = $(element).data('city-name');
                 let cityLat = $(element).data('lat');
                 let cityLon = $(element).data('lon');
-                fetch(fiveDayForecastAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
-                    .then(function (response) { return response.json();
+                // fetch the city forecast.
+                fetch(currentWeatherAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
+                    .then(function (response) {
+                        if (response.status !== 200) {
+                            window.alert("Error in retrieving data from OpenWeatherMap.");
+                            console.log(response.status);
+                        } else {
+                            return response.json();
+                        }
                     })
                     .then(function (data) {
-                        // console.log(data);
-                        let currentWeather = data.list[0];
+                        // set city name and today's weather
                         selectedCity.text(cityName);
-                        cityWeatherIcon.text(currentWeather.weather.main); // associate the icon with the weather.
-                        // TODO: get these to be the right measurement.
-                        weatherListEl[0].textContent = currentWeather.main.temp + "°F";
-                        weatherListEl[1].textContent = currentWeather.main.humidity + "%";
-                        weatherListEl[2].textContent = currentWeather.wind.speed + " miles/hour";
-                        
-
+                        weatherIconSpan.html(
+                            '<img id="weather-icon" src="https://openweathermap.org/img/wn/'+
+                            data.weather[0].icon
+                            +'.png"/>'
+                        );
+                        let weatherListEl = currentWeatherVariables[0].children;
+                        weatherListEl[0].textContent = data.main.temp + "°F";
+                        weatherListEl[1].textContent = data.main.humidity + "%";
+                        weatherListEl[2].textContent = data.wind.speed + " miles/hour";
                     });
+                fetch(forecastAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        // add 5-day weather forecast box
+                        weatherContainer.append(
+                            '<section class="box">'+
+                            '<h3 class="title is-4 has-text-info-dark">'+
+                                '5-Day Forecast' + 
+                            '</h3>'+
+                            '<div id="weather-forecast" class="level">'+
+                            '</div>'+
+                            '</section>'
+                        );
+                        for (let i = 0; i < data.list.length; i++) {
+                            // starts at 9 am
+                            let dateAndTime = data.list[i].dt_txt.split(" ");
+                            // let dateAndTime = data.list[i].dt_txt;
+                            if (dateAndTime[1] === "12:00:00") {
+                                $('#weather-forecast').append(
+                                    '<div class="level-item">'+
+                                        '<div>'+
+                                            '<p class="heading"><strong>'+ dateAndTime[0] + '</strong></p>'+
+                                            '<p class="heading">Temp: ' + data.list[i].main.temp + '</p>' +
+                                            '<p class="heading">Humidity: ' + data.list[i].main.humidity + '</p>'+
+                                            '<p class="heading">Wind: ' + data.list[i].wind.speed + '</p>' +
+                                        '</div>'+
+                                    '</div>'
+                                );
+                            }
+                        }
+                    })
             }
         })
     }
@@ -118,7 +153,6 @@ function main() {
     // save searchText to local storage
 
     getCurrentDate();
-    loadWeatherEls();
     showCityList();
     grabWeatherInfo();
 } // end of main
