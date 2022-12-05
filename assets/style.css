@@ -11,6 +11,10 @@ li:hover {
     background-color:#ffe08a!important;
 }
 
+.box {
+    background-color: rgb(228, 228, 228);
+}
+
 @media (max-width: 1550px) {
     #main-content {
         margin: 1vh 5vh;
