@@ -46,7 +46,7 @@ function main() {
                 $('.delete').on('click', function(event) { // close button functionality
                     cityModal.removeClass('is-active'); // hide modal
                 });
-                fetch(geoAPI+search+"&limit="+optionalCitiesLimit+"&appid="+APIKey)
+                fetch(geoAPI+search+"&limit="+optionalCitiesLimit+"&appid="+APIKEY)
                     .then(function (response) {
                         return response.json();
                     })
@@ -101,7 +101,7 @@ function main() {
                 let cityLat = $(element).data('lat');
                 let cityLon = $(element).data('lon');
                 // fetch the city forecast.
-                fetch(currentWeatherAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
+                fetch(currentWeatherAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKEY)
                     .then(function (response) {
                         if (response.status !== 200) {
                             window.alert("Error in retrieving data from OpenWeatherMap.");
@@ -123,7 +123,7 @@ function main() {
                         weatherListEl[1].textContent = data.main.humidity + "%";
                         weatherListEl[2].textContent = data.wind.speed + " miles/hour";
                     });
-                fetch(forecastAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKey)
+                fetch(forecastAPI+"&lat="+cityLat+"&lon="+cityLon+"&appid="+APIKEY)
                     .then(function (response) {
                         return response.json();
                     })
