@@ -35,8 +35,7 @@
                     </div>
                     <div class="control">
                         <button
-                        id="search-button"
-                        class="button is-info js-modal-trigger"
+                        class="button is-info js-modal-trigger search-class"
                         data-target="modal-city-select"> <!-- data-target needed so clicking the button knows what modal to open. -->
                             Search
                         </button>
@@ -48,7 +47,10 @@
                 <h3 class="title has-text-info-dark">
                     Previous searches
                 </h3>
-                <ul id="search-history">
+                <h4 class="subtitle is-6">
+                    (Will appear on refresh.)
+                </h4>
+                <ul id="search-history" class="search-class cities">
                 </ul>
             </section>
         </aside>
@@ -90,7 +92,7 @@
                 </header>
                 <div class="box">
                     <!-- to be populated with cities -->
-                    <ul id="city-list">
+                    <ul id="city-list" class="cities">
                     </ul>
                 </div>
             </div>
