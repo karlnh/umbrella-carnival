@@ -1,4 +1,3 @@
-const APIKey = "";
 // https://home.openweathermap.org/api_keys
 
 const geoAPI = "https://api.openweathermap.org/geo/1.0/direct?q="
@@ -81,6 +80,12 @@ function main() {
                             console.log("No city found.");
                             cityList.append('<p>No cities found.</p>');
                         }
+                        city.name
+                        const newCity = {
+                            name: city.name,
+                        }
+                        searchesJSON.push()
+                        localStorage.setItem("searches", JSON.stringify(searchesJSON));
                     });    
             }; // otherwise don't do anything.
         });
